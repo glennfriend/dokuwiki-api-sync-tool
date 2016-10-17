@@ -76,13 +76,16 @@ foreach ($folderList as $folder) {
             $result = false;
             $fileMd5Hash = hash_file('md5', $file);
             $pageInfo = getPage($wikiNameTag);
-            if (!$pageInfo) {
-                $type = 'err';
-            }
-            elseif ($pageInfo['md5Hash'] === $fileMd5Hash) {
+
+            // 原本的 wiki page 已存在, 而且內容相同
+            if ($pageInfo && $pageInfo['md5Hash'] === $fileMd5Hash) {
+
                 $type = 'skip';
+
             }
+            // 新增 or 覆蓋
             else {
+
                 $content = file_get_contents($file);
                 $result = addPage($wikiNameTag, $content);
                 if ($result) {
@@ -139,12 +142,11 @@ if ($isExec) {
     echo "    [ok]    寫入,       覆寫\n";
     echo "    [skip]  內容相同,   跳過\n";
     echo "    [fail]  寫入失敗,   略過\n";
-    echo "    [err]   來源檔錯誤, 略過\n";
 }
 elseif ($isDebug) {
     echo "Tip: \n";
     echo "    [=] 檔案內容 相同\n";
-    echo "    [!] 檔案內容 不同\n";
+    echo "    [!] 檔案內容 發生了異動\n";
     echo "    [U] 檔案 不存在\n";
 }
 
