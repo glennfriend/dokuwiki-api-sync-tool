@@ -51,14 +51,14 @@ $globRecursiveFunc = function($pattern, $flags = 0) use (&$globRecursiveFunc)
 
 //
 $userNamespace = 'talk:wiki:user:' . conf('dokuwiki.auth.user');
-$baseDir = __DIR__ . '/sync_files';
-$folderList = $globRecursiveFunc($baseDir . '/*', GLOB_ONLYDIR|GLOB_ERR);
+$parsePath = conf('parse_folder_path');
+$folderList = $globRecursiveFunc($parsePath . '/*', GLOB_ONLYDIR|GLOB_ERR);
 $totalFolders = count($folderList);
 
 $totalFiles = 0;
 foreach ($folderList as $folder) {
 
-    $relativelyFolder = substr($folder, strlen($baseDir));
+    $relativelyFolder = substr($folder, strlen($parsePath));
     $wikiFolderTag    = $userNamespace . nameToWikiTag($relativelyFolder);
     // dd_dump($relativelyFolder);
     // dd_dump($wikiFolderTag);
@@ -66,7 +66,7 @@ foreach ($folderList as $folder) {
     $files = glob("{$folder}/*.txt", GLOB_ERR);
     foreach ($files as $file) {
         $totalFiles++;
-        $relativelyFile = substr($file, strlen($baseDir));
+        $relativelyFile = substr($file, strlen($parsePath));
         $forderName     = pathinfo($relativelyFile, PATHINFO_DIRNAME );
         $fileName       = pathinfo($file, PATHINFO_FILENAME);
         $wikiNameTag    = $userNamespace . nameToWikiTag($forderName) .':'. nameToWikiTag($fileName);
