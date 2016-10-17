@@ -196,9 +196,16 @@ function nameToWikiTag($folderName)
 {
     $names = explode("/", $folderName);
     foreach ($names as $index => $name) {
+        //
+        $name = preg_replace('/[&]+/', '&', $name);
+        $name = preg_replace('/&/', '-and-', $name);
+
+        //
         $name = preg_replace('/[%: ]+/', '-', $name);
         $name = preg_replace('/[-]+/', '-', $name);
-        $name = trim($name, '/');
+
+        //
+        $name = trim($name, '/-');
         $name = trim($name);
         $names[$index] = $name;
     }
