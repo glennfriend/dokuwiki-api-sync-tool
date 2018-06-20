@@ -19,5 +19,5 @@ return [
             'password'  => '',
         ],
     ],
-    'parse_folder_path' => getProjectPath('/example_sync_files'),   // you can change to "sync_files"
+    'parse_folder_path' => getProjectPath('/sync_files'),
 ];
